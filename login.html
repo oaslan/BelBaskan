@@ -57,7 +57,7 @@
 		            }
 		        });
 		        $.ajax({//   /api/Auth/Login
-		            type: "POST", url: "http://localhost/BelBaskan/api/Auth/Login", data: form.serialize(), dataType: "json", async: false, success: function (d) {
+		            type: "POST", url: "http://155.223.207.39/BelBaskan/api/Auth/Login", data: form.serialize(), dataType: "json", async: false, success: function (d) {
 		                if (d.durum) {
 		                    $.cookie("accessToken", d.accessToken);
 		                    $(location).attr("href", "index.html");
