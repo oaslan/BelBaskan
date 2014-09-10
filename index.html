@@ -1,0 +1,185 @@
+﻿
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>BelediyeMobil</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+	<meta charset='utf-8'>
+    <link href="assets/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="assets/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+</head>
+<body ng-controller="belediyeCTRL" id="belediyeCTRL">
+    <a href="#" id="Refresh">Yenile</a>
+    <div data-role="view" id="index" data-title="Randevular" data-layout="mobile-tabstrip">
+    <ul data-role="listview" data-style="inset" data-type="group">
+        <li>
+            Randevular
+            <ul>
+                <li ng-repeat="r in Randevular"><a ng-href="#rndv_{{r.Id}}" data-rel="modalview"><span>{{r.Konu}}</span> - <small>{{ r.BaslamaSaati }}</small></a></li>
+                <li ng-show="Randevular.length <= 0">Randevu Yok</li>
+            </ul>
+        </li>
+    </ul>
+    <div ng-repeat="r in Randevular" id="rndv_{{r.Id}}" data-role="modalview" style="width: 90%;">
+        <div data-role="view" style="width:400px">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span>{{r.Konu}} - {{r.BaslamaSaati}}</span>
+                    <a class="closeModalView" data-role="button" data-align="right">X</a>
+                </div>
+            </div>
+            <div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="view" id="arayanlar" data-title="Arayan Kaydı" data-layout="mobile-tabstrip">
+    <ul data-role="listview" data-style="inset" data-type="group">
+         <li>
+            Arayan Kaydı
+            <ul>
+                <li ng-repeat="a in Arayanlar"><a href="javascript:void(0);" class="modal" data-id="{{a.Id}}" data-rel="modalview"><span> </span><span>{{a.ArayanAdi}}</span> - <small>{{ a.AramaSaati }}</small> {{ a | json}}</a></li>
+                <li ng-show="Arayanlar.length <= 0">Gelen yeni mesaj yok</li>
+            </ul>
+        </li>
+    </ul>
+<div data-role="view">
+    <div data-role="modalview" id="arama{{a.Id}}" ng-repeat="a in Arayanlar" style="width: 90%;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>{{a.ArayanAdi}} - {{a.AramaSaati}}</span>
+            <a class="closeModalView" data-role="button" data-align="right">X</a>
+        </div>
+    </div>
+    <div>
+            {{ a.Konu }}
+    </div>
+    </div>
+</div>
+</div>
+<div data-role="view" id="cikis" data-title="Çıkış" data-layout="mobile-tabstrip">
+</div>
+        <div data-role="layout" data-id="mobile-tabstrip">
+            <header data-role="header">
+                <div data-role="navbar">
+                    <!--<a class="nav-button" data-align="left" data-role="backbutton">Back</a>-->
+                    <span data-role="view-title"></span>
+                    <input data-align="right" type="date" id="Tarih" />
+                    <a class="nav-button" data-align="left" data-role="backbutton">Yenile</a>
+                </div>
+            </header>
+
+
+
+            <div data-role="footer">
+                <div data-role="tabstrip" id="badges-tabs" data-select="onSelect">
+                    <a href="#index" data-icon="home">Randevular</a>
+                    <!--data-badge="10"-->
+                    <!--<a href="#mesajlar" data-icon="edit">Mesajlar</a>-->
+                    <a href="#arayanlar" data-icon="bookmarks">Arayan Kaydı</a>
+                    <!--<a href="#ayarlar" data-icon="settings">Ayarlar</a>-->
+                    <a href="#cikis" id="cikis" data-icon="featured">Çıkış</a>
+                </div>
+            </div>
+        </div>
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/kendo.mobile.min.js"></script>
+        <script src="assets/js/jquery.cookie.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+        <script>
+            window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+            function belediyeCTRL($scope)
+            {
+                $scope.Arayanlar;
+                $scope.Randevular;
+            }
+            var model;
+            var token;
+            var scope;
+            $(function () {
+                
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                $('#Tarih').val(today);
+                $('#Tarih').change(function () {
+                    fetchData(token)
+                });
+                token = $.cookie("accessToken");
+                if (token == undefined || token == "" || token == null) {
+                    $(location).attr("href", "login.html");
+                }
+                else {
+                    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
+                    console.log(scope);
+                    showLoader();
+                    fetchData(token);
+                    hideLoader();
+                }
+                $(document).on("click", ".closeModalView", function () {
+                    var modal = $(this).closest('div[data-role="modalview"]');
+                    $(modal).kendoMobileModalView('close');
+                });
+                $(document).on("click", ".modal", function () {
+                    console.log($(this).data("id"));
+                });
+            });
+
+            function showLoader() {
+                kendoMobileApplication.pane.loader.show();
+            }
+            function hideLoader() {
+                kendoMobileApplication.pane.loader.hide();
+            }
+            function onSelect(e)
+            {
+                var page = e.item.attr("id");
+                if (page != undefined && page == 'cikis')
+                {
+                    showLoader();
+                    $.ajax({
+                        type: "POST",
+                        data: { '': token },
+                        url: "http://localhost/BelBaskan/api/Auth/Cikis",//   /api/Auth/Cikis
+                        dataType: "json",
+                        async:false,
+                        success: function (result) {
+                            if (result) {
+                                $(location).attr("href", "login.html");
+                            }
+                        }
+                    });
+                }
+            }
+            function getDate() {
+                return $("#Tarih").val().split("-").reverse().join(".");
+            };
+            function fetchData(accessToken) {
+                //var data = { accessToken: accessToken };
+                $.ajax({
+                    type: "POST",
+                    data: { 'accessToken': accessToken, Tarih: getDate() },
+                    url: "http://localhost/BelBaskan/api/Auth/BaskanView",   //  /api/Auth/BaskanView
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+                        if (result != null) {
+                            console.log(result);
+                            scope.$apply(function () {
+                                scope.Arayanlar = result.Arayanlar;
+                                scope.Randevular = result.Randevular;
+                            });
+                        }
+                        else {
+                            $(location).attr('href', 'login.html');
+                        }
+                    }
+                });
+            };
+            
+        </script>
+</body>
+</html>

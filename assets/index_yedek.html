@@ -1,0 +1,270 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ege Üniversitesi</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link href="assets/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="assets/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <a href="../index.html">Geri</a>
+    <div data-role="view" id="index" data-title="Profil" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                Profil
+                <ul>
+                    <li>
+                        <h2><span data-bind="text: AdSoyad">Zeynep Çiftçi</span>  <small style="font-size:14px; color:#808080" data-bind="text: OgrenciNo">09256879</small></h2>
+                        <img src="assets/zeynep.jpg" data-bind="attr:{src : Resim}" /><!--Resim HttpResponse accessToken-->
+                    </li>
+                    <li><a href="#mesajlar">Mesajlar</a></li>
+                    <li><a href="#notlar">Ders Notları</a></li>
+                    <li><a href="#ayarlar">Ayarlar</a></li>
+                </ul>
+            </li>
+            <li>
+                Duyurular
+                <ul>
+                    <!-- ko foreach: Duyurular -->
+                    <li><a href="#duyuruX" data-bind="attr:{ href : '#duyuru' + Id }" data-rel="popover"><span data-bind="text: Baslik"></span> <small data-bind="text: Tarih">25.06.2013 16:38</small></a></li>
+                    <!-- /ko -->
+                    <!-- ko if: Duyurular().length < 1 -->
+                    <li>Yeni Duyuru Yok</li>
+                    <!-- /ko -->
+                </ul>
+            </li>
+        </ul>
+        <div data-role="view">
+            <div id="duyuru1" data-role="popover">
+                <div data-role="view" id="view1" data-title="view1" style="width:300px">
+                    Bankalar eylüle dipteki fiyatlarla giriyor. Banka Endeksi, 22 Mayıs’tan bu yana yüzde 36 değer kaybederken, hisseler 2008 krizindeki fiyat kazanç oranlarına yaklaştı. Suriye’ye müdahale olasılığı, FED beklentisi piyasalarda stresi artırırken dipteki hisseler dikkat çekiyor
+                    #GARAN #AKBNK #TEBNK #SKBNK #VAKBN #ISCTR #ALBRK #HALKB #ASYAB #YKBNK
+                </div>
+            </div>
+            <div id="duyuru2" data-role="popover">
+                <div data-role="view" id="view1" data-title="view1">
+                    Brezilya ekonomisi 2. çeyrekte yıllık bazda yüzde 3.3 ile beklentinin üzerinde büyüdü.
+                    Realdeki düşüş ve enflasyondan ötürü zor durumdaki Brezilya ekonomisi ikinci çeyrekte yıllık bazda yüzde 3.3 büyüme kaydetti. Ülkenin resmi istatisiktik ofisi, ekonominin önceki çeyrekten de yüzde 1.5 büyümeye işaret ettiğini söyledi.
+                </div>
+            </div>
+            <div id="duyuru3" data-role="popover">
+                <div data-role="view" id="view1" data-title="view1">
+                    Ekonomi Bakanı Zafer Çağlayan : Yılın kalan kısmı zor geçecek.
+                    Ağustos ayı ihracat rakamlarını değerlendirerek; "Son 2-3 ayda küresel ekonomideki tansiyonu da eklediğimizde dış talebin reel olarak zayıf seyrettiğini görüyoruz.
+                    Dolayısıyla yılın kalan ayları şimdiye kadarkinden daha zor geçecek gibi görünüyor" dedi. Ağustos ayı İhracatçı Birlikleri kayıt rakamlarını değerlendiren Ekonomi Bakanı Zafer Çağlayan, 2013 yılı Ağustos ihracatın yüzde 1.4 artarak 10 milyar 595 milyon dolar olduğunu belirtti. 8 aylık ihracatın 98,9 milyar dolar olduğunu hatırlatan Bakan Çağlayan, geçen senenin aynı dönemine göre sanayi ürünleri ihracatının binde 2 oranında artışla 8 milyar 779 milyon dolar, tarım ürünleri ihracatın yüzde 5,2 oranında artarak 1 milyar 415 milyon dolar, madencilik ihracatının ise yüzde 17 oranında artarak 401 milyon dolara yükseldiğine dikkat çekti.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="view" id="mesajlar" data-title="Mesajlar" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                Mesajlar
+                <ul>
+                    <!-- ko foreach: Mesajlar -->
+                    <li><a href="#mesaj1" data-bind="attr:{ href : '#mesaj' + Id }" data-rel="popover"><span> </span><span data-bind="text:Konu">Önümüzdeki ay yapılacak olan seminerler</span>  <small data-bind="text: Tarih">25.06.2013 16:38</small></a></li>
+                    <!-- /ko -->
+                    <!-- ko if: Mesajlar().length < 1-->
+                    <li>Gelen yeni mesaj yok</li>
+                    <!--/ko-->
+                </ul>
+            </li>
+        </ul>
+        <div data-role="view">
+            <!-- ko foreach: Mesajlar -->
+            <div id="mesaj1" data-bind="attr:{href : '#mesaj' + Id}" data-role="popover">
+                <div data-role="view" id="view1" data-title="view1" data-bind="html: Metin">
+                    Bankalar eylüle dipteki fiyatlarla giriyor. Banka Endeksi, 22 Mayıs’tan bu yana yüzde 36 değer kaybederken, hisseler 2008 krizindeki fiyat kazanç oranlarına yaklaştı. Suriye’ye müdahale olasılığı, FED beklentisi piyasalarda stresi artırırken dipteki hisseler dikkat çekiyor
+                    #GARAN #AKBNK #TEBNK #SKBNK #VAKBN #ISCTR #ALBRK #HALKB #ASYAB #YKBNK
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <div data-role="view" id="notlar" data-title="Ders Notları" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                Ders Notları
+                <ul>
+                    <li>
+                        <label>
+                            Dönem <select>
+                                <option value="2013-2">2012-2013 Bahar</option>
+                                <option value="2013-1">2012-2013 Güz</option>
+                                <option value="2012-2">2011-2012 Bahar</option>
+                                <option value="2012-1">2011-2012 Güz</option>
+                            </select>
+                        </label>
+                    </li>
+                    <!-- ko foreach: DersNotlari -->
+                    <li><span data-bind="text: DersAdi">Mühendislik Ekonomisi</span> (<span data-bind="text: HarfNot">82</span>)<span class="value" data-bind="text: OgretimYili">BB</span></li>
+                    <!-- /ko -->
+                    <!-- ko if: DersNotlari().length < 1 -->
+                    <li>Kayıtlı ders notu bulunamadı</li>
+                    <!-- /ko -->
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="ayarlar" data-title="Ayarlar" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                Ayarlar
+                <form action="index.html#ayarlar">
+                    <ul data-role="listview" data-style="inset">
+                        <li>
+                            <label>
+                                E-mail <small>adres değişikliği önceki e-mail adresinizden doğrulama gerektirir</small>
+                                <input type="text" data-bind="attr:{'value':Email}" value="zeynep.ciftci@ogrenci.ege.edu.tr" />
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                Cep Telefonu
+                                <input type="text" data-bind="attr:{'value':GSM}" value="5443278998" />
+                            </label>
+                        </li>
+                        <li>
+                            <label class="km-listview-label">
+                                <input type="checkbox" checked="checked">
+                                Mesajları e-posta adresime bildir
+                            </label>
+                        </li>
+                        <li>
+                            <label class="km-listview-label">
+                                <input type="checkbox">
+                                Mesajları sms olarak bildir
+                            </label>
+                        </li>
+                        <li>
+                            <a id="grs" data-role="button" data-icon="action" class="km-button">Kaydet</a>
+                        </li>
+                    </ul>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="cikis" data-title="Çıkış" data-layout="mobile-tabstrip">
+    </div>
+    <div data-role="layout" data-id="mobile-tabstrip">
+        <header data-role="header">
+            <div data-role="navbar">
+                <!--<a class="nav-button" data-align="left" data-role="backbutton">Back</a>-->
+                <span data-role="view-title"></span>
+                <a data-align="right" data-role="button" class="nav-button" href="#index">Profil</a>
+            </div>
+        </header>
+
+
+
+        <div data-role="footer">
+            <div data-role="tabstrip" id="badges-tabs" data-select="onSelect">
+                <a href="#index" data-icon="home">Profil</a>
+                <!--data-badge="10"-->
+                <a href="#mesajlar" data-icon="edit">Mesajlar</a>
+                <a href="#notlar" data-icon="bookmarks">Ders Notları</a>
+                <a href="#ayarlar" data-icon="settings">Ayarlar</a>
+                <a href="#cikis" id="cikis" data-icon="featured">Çıkış</a>
+            </div>
+        </div>
+    </div>
+
+    <style scoped>
+        #tabstrip-profile h2 {
+            display: inline-block;
+            font-size: 1.1em;
+            margin: 1.5em 0 0 1em;
+        }
+
+            #tabstrip-profile h2 span {
+                display: block;
+                clear: both;
+                font-size: 2em;
+                margin: .2em 0 0 0;
+            }
+
+        #tabstrip-profile img {
+            width: 5em;
+            height: 5em;
+            float: left;
+            margin: 1em;
+            -webkit-box-shadow: 0 1px 3px #333;
+            box-shadow: 0 1px 3px #333;
+            -webkit-border-radius: 8px;
+            border-radius: 8px;
+        }
+
+        .sales-down,
+        .sales-hold,
+        .sales-up,
+        .value {
+            float: right;
+        }
+
+        .sales-up {
+            color: green;
+        }
+
+        .sales-down {
+            color: red;
+        }
+
+        .sales-hold {
+            color: blue;
+        }
+
+        .value {
+            color: #bbb;
+        }
+    </style>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/kendo.mobile.min.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+    <script src="assets/js/knockout-2.3.0.js"></script>
+    <script src="assets/FullModel.js"></script>
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+        var token;
+        $(function () {
+            token = $.cookie("accessToken");
+            if (token == undefined || token == "" || token == null) {
+                $(location).attr("href", "login.html");
+            }
+            else {
+                showLoader();
+                fetchData(token);
+                hideLoader();
+            }
+        });
+        function showLoader() {
+            kendoMobileApplication.pane.loader.show();
+        }
+        function hideLoader() {
+            kendoMobileApplication.pane.loader.hide();
+        }
+        function onSelect(e) {
+            var page = e.item.attr("id");
+            if (page != undefined && page == 'cikis') {
+                showLoader();
+                $.ajax({
+                    type: "POST",
+                    data: { '': token },
+                    url: "/api/Auth/Cikis",
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+                        if (result) {
+                            $.cookie("accessToken", null);
+                            $(location).attr("href", "login.html");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

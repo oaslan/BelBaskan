@@ -1,0 +1,88 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kullanıcı Giriş</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+	<meta charset='utf-8'>
+    <link href="assets/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="assets/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="forms" data-role="view" data-title="Kullanıcı Giriş" data-init="initForm" data-use-native-scrolling="true">
+		<form action="index.html#loggedin">
+		<ul data-role="listview" data-style="inset">
+		<li>
+		    <h3>Giriş</h3>
+		</li>
+		<li><label>Kullanıcı Adı
+			<input type="text" name="Kullanici" required /></label></li>
+			<li><label>Şifre
+			<input type="password" name="Sifre" required/></label></li>
+			<li><a id="grs" data-role="button" data-icon="action" class="km-button">Giriş</a></li>
+		</ul>
+		</form>
+	</div>
+    <div id="loader" data-role="view" data-show="onShow">Giriş Yapılıyor</div>
+    <div id="Hata" data-role="modalview" style="width: 200px; min-height: 50px;" data-modal="false">
+        <p style="color:#cd1235; text-align:center" id="hataText">Giriş bilgileri hatalı</p><br /><br />
+    </div>
+<style scoped>
+    #layoutView .km-view-title
+    {
+        visibility: inherit;
+    }
+
+    .km-android #layoutView .km-view-title
+    {
+        display: block;
+        position: static;
+    }
+</style>
+
+<script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/kendo.mobile.min.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+        $(function () {
+		    $("#grs").on("click", function (e) {
+		        onShow();
+		        var form = $(this).closest("form");
+		        $("input", form).each(function () {
+		            if ($(this).val().length <= 0) {
+		                $(this).focus();
+		                e.preventDefault();
+		                return;
+		            }
+		        });
+		        $.ajax({//   /api/Auth/Login
+		            type: "POST", url: "http://localhost/BelBaskan/api/Auth/Login", data: form.serialize(), dataType: "json", async: false, success: function (d) {
+		                if (d.durum) {
+		                    $.cookie("accessToken", d.accessToken);
+		                    $(location).attr("href", "index.html");
+		                }
+		                else {
+		                    $("#hataText").text(d.mesaj);
+		                    openError();
+		                }
+		                
+		            }
+		        });
+		        onHide();
+			});
+		});
+		function onShow() {
+		    kendoMobileApplication.pane.loader.show();
+		}
+		function onHide()
+		{
+		    kendoMobileApplication.pane.loader.hide();
+		}
+		function openError()
+		{
+		    $("#Hata").data("kendoMobileModalView").open();
+		}
+    </script>
+</body>
+</html>
